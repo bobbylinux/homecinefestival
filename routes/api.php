@@ -16,3 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// /api/cicli
+Route::resource('cicli',CicliController::class);
+Route::resource('titoli',TitoliController::class);

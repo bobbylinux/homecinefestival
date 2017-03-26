@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-class Ciclo extends BaseModel
+class Titolo extends BaseModel
 {
-
-    protected $table = "cicli";
+    protected $table = "titoli";
 
     public $timestamps = false;
 
-    public function titoli()
+    public function cicli()
     {
         return $this->belongsToMany('App\Models\Titolo','cicli_titoli')->withPivot('obsoleto');
     }
-
 }
