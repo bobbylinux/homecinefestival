@@ -21,8 +21,8 @@ class TitoliController extends Controller
      */
     public function index()
     {
-        $data = $this->titolo->getTitoli();
-
+        $parameters = request()->input();
+        $data = $this->titolo->getTitoli($parameters);
         return response()->json($data);
     }
 
@@ -55,7 +55,9 @@ class TitoliController extends Controller
      */
     public function show($id)
     {
-        $data = $this->titolo->getTitolo($id);
+        $parameters = request()->input();
+        $parameters['id'] = $id;
+        $data = $this->titolo->getTitoli($parameters);
         return response()->json($data);
     }
 

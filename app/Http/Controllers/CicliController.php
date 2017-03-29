@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\CicloService;
 use Illuminate\Http\Request;
+use Mockery\CountValidator\Exception;
 
 class CicliController extends Controller
 {
@@ -22,7 +23,8 @@ class CicliController extends Controller
      */
     public function index()
     {
-        $data = $this->ciclo->getCicli();
+        $parameters = request()->input();
+        $data = $this->ciclo->getCicli($parameters);
         return response()->json($data);
     }
 
@@ -33,36 +35,44 @@ class CicliController extends Controller
      */
     public function create()
     {
-        //
+        try {
+            $ciclo = $this->ciclo->createCiclo();
+            return response()->json($ciclo,201);
+        } catch (Exception $ex) {
+            return response()->json(['message' => $ex->getMessage(),500]);
+        }
+
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $this->ciclo->createCicli($request);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $data = $this->ciclo->getCiclo($id);
+        $parameters = request()->input();
+        $parameters['id'] = $id;
+        $data = $this->ciclo->getCicli($parameters);
         return response()->json($data);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -73,8 +83,8 @@ class CicliController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -85,11 +95,11 @@ class CicliController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $this->ciclo->deleteCiclo($id);
     }
 }

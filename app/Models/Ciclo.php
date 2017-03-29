@@ -11,7 +11,7 @@ class Ciclo extends BaseModel
 
     public function titoli()
     {
-        return $this->belongsToMany('App\Models\Titolo','cicli_titoli')->withPivot('obsoleto');
+        return $this->belongsToMany('App\Models\Titolo','cicli_titoli');
     }
 
 }

@@ -19,6 +19,7 @@ class CreateCicliTitoliTable extends Migration
             $table->foreign('ciclo_id')->references('id')->on('cicli');
             $table->integer('titolo_id');
             $table->foreign('titolo_id')->references('id')->on('titoli');
+            $table->date('data_visualizzazione')->nullable();
             $table->boolean('obsoleto')->default(false);
         });
     }
