@@ -49,8 +49,7 @@ class CicloService
 
     public function deleteCiclo($id) {
         $ciclo = Ciclo::find($id)->firstOrFail();
-
-        $ciclo->delete();
+        $ciclo->destroy();
     }
 
     private function filtraCicli($cicli, $infoAggiuntive)

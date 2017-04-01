@@ -62,17 +62,6 @@ class TitoliController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -81,7 +70,14 @@ class TitoliController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $titolo = $this->titolo->updateTitolo($request, $id);
+            return response()->json($titolo, 200); // 200 -> ok
+        } catch (ModelNotFoundException $ex) {
+            throw $ex;
+        } catch (Exception $ex) {
+            return response()->json(['message' => $ex->getMessage(),500]);
+        }
     }
 
     /**

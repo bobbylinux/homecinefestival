@@ -10,14 +10,16 @@ class TitoloService
     private $clausuleWhere = [
         'titolo',
         'titoloOriginale',
-        'dataUscita'
+        'dataUscita',
+        'dataVisualizzazione'
     ];
 
     private $infoSupportate = [
         'cicli' => 'cicli'
     ];
 
-    public function getTitoli($parameters) {
+    public function getTitoli($parameters)
+    {
 
         $infoAggiuntive = $this->getInformazioniAggiuntive($parameters);
         $clausuleWhere = $this->getClausuleWhere($parameters);
@@ -27,8 +29,40 @@ class TitoloService
         return $this->filtraTitolo($titoli, $infoAggiuntive);
     }
 
-    private function filtraTitolo($titoli, $infoAggiuntive) {
+    public function createTitolo($request)
+    {
+        $titolo = new Titolo();
 
+        $titolo->titolo = $request->input('titolo');
+        $titolo->titolo_originale = $request->input('titoloOriginale');
+        $titolo->data_uscita = $request->input('dataUscita');
+
+        $titolo->save();
+
+        return $this->filtraTitolo([$titolo]);
+    }
+
+    public function updateTitolo($request, $id)
+    {
+        $titolo = Titolo::where('id', $id)->firstOrFail();
+
+        $titolo->titolo = $request->input('titolo');
+        $titolo->titolo_originale = $request->input('titoloOriginale');
+        $titolo->data_uscita = $request->input('dataUscita');
+
+        $titolo->save();
+
+        return $this->filtraTitolo([$titolo]);
+    }
+
+    public function deleteTitolo($id)
+    {
+        $titolo = Titolo::where('id', $id)->firstOrFail();
+        $titolo->destroy();
+    }
+
+    private function filtraTitolo($titoli, $infoAggiuntive)
+    {
         $data = [];
 
         foreach ($titoli as $titolo) {
@@ -55,12 +89,10 @@ class TitoloService
         }
 
         return $data;
-
     }
 
     private function getClausuleWhere($parameters)
     {
-
         $clause = [];
 
         foreach ($this->clausuleWhere as $property) {
@@ -74,7 +106,6 @@ class TitoloService
 
     private function getInformazioniAggiuntive($parameters)
     {
-
         $informazioni = [];
 
         if (isset($parameters['include'])) {
@@ -85,4 +116,5 @@ class TitoloService
 
         return $informazioni;
     }
+
 }
